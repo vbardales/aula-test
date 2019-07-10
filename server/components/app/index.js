@@ -27,10 +27,10 @@ export function start(app, config) {
   const server = new Server(app, _.omit(config, 'routes'), routes, logger);
   app.set('server', server);
 
-  const songDB = new Db('song', path.join(__dirname, 'db', 'song'), logger);
+  const songDB = new Db('song', path.join(__dirname, '..', '..', '..', 'db', 'song'), 'json', logger);
   app.set('db:song', songDB);
 
-  const soundfileDB = new Db('soundfile', path.join(__dirname, 'db', 'soundfile'), logger);
+  const soundfileDB = new Db('soundfile', path.join(__dirname, '..', '..', '..', 'db', 'soundfile'), 'mp3', logger);
   app.set('db:soundfile', soundfileDB);
 
   const Soundfiles = new SoundfileRepository(soundfileDB, logger);

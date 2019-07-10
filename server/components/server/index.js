@@ -48,6 +48,19 @@ export default class Server {
     this.expressApp.use(methodOverride());
     this.expressApp.use(helmet.noCache());
     this.expressApp.disable('etag');
+
+    this.expressApp.use('/', (req, res, next) => {
+      res.header('Access-Control-Allow-Origin', '*');
+      res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS, PATCH');
+      res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, X-Correlation-ID, Content-Type, Accept');
+
+      if (req.method === 'OPTIONS') {
+        return res.sendStatus(200).end();
+      }
+
+      next();
+    });
+
     this.expressApp.use('/', (req, res, next) => {
       this.logger.log(`[${req.method}][${req.url}] Body:`, req.body);
       next();

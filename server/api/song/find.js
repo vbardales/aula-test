@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import Promise from 'bluebird';
 
 export default (app, config, logger) => {
   return {
@@ -8,9 +9,11 @@ export default (app, config, logger) => {
       (req, res) => {
         const from = req.query.from || 0;
         const size = req.query.size || 20;
-        app.get('repository:song').find(from, size)
+        const Songs = app.get('repository:song');
+        Songs.find(from, size)
+          .then((songs) => Promise.map(songs, song => Songs.get(song)))
           .then((songs) => {
-            logger.log(`${_.size(songs)} songs found`);
+            logger.log(`${_.size(songs)} song(s) found`);
             res.json(songs);
           })
           .catch((err) => {

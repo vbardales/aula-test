@@ -47,4 +47,15 @@ export default class SongRepository {
   delete(id) {
     return this.db.delete(id);
   }
+
+  get(id) {
+    return this.db.get(id)
+      .then((data) => JSON.parse(data))
+      .tapCatch(err => this.logger.error(`Song ${id} data are corrupted: ${err.message}`))
+    ;
+  }
+
+  find(from, size) {
+    return this.db.find();
+  }
 }

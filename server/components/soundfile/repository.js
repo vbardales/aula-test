@@ -6,4 +6,8 @@ export default class SoundfileRepository {
       value: logger,
     });
   }
+
+  get(id) {
+    return this.db.get(id);
+  }
 }
